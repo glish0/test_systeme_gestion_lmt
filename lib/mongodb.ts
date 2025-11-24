@@ -1,66 +1,20 @@
-import mongoose from 'mongoose';
-
-// Define the connection cache type
-type MongooseCache = {
-  conn: typeof mongoose | null;
-  promise: Promise<typeof mongoose> | null;
-};
-
-// Extend the global object to include our mongoose cache
-declare global {
-  // eslint-disable-next-line no-var
-  var mongoose: MongooseCache | undefined;
-}
+import mongoose from "mongoose";
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
-
-// Initialize the cache on the global object to persist across hot reloads in development
-let cached: MongooseCache = global.mongoose || { conn: null, promise: null };
-
-if (!global.mongoose) {
-  global.mongoose = cached;
+if (!MONGODB_URI) {
+  throw new Error("Please define the MONGODB_URI environment variable inside .env.local");
 }
 
-/**
- * Establishes a connection to MongoDB using Mongoose.
- * Caches the connection to prevent multiple connections during development hot reloads.
- * @returns Promise resolving to the Mongoose instance
- */
-async function connectDB(): Promise<typeof mongoose> {
-  // Return existing connection if available
-  if (cached.conn) {
-    return cached.conn;
-  }
-
-  // Return existing connection promise if one is in progress
-  if (!cached.promise) {
-    // Validate MongoDB URI exists
-    if (!MONGODB_URI) {
-      throw new Error(
-        'Please define the MONGODB_URI environment variable inside .env.local'
-      );
-    }
-    const options = {
-      bufferCommands: false, // Disable Mongoose buffering
-    };
-
-    // Create a new connection promise
-    cached.promise = mongoose.connect(MONGODB_URI!, options).then((mongoose) => {
-      return mongoose;
-    });
-  }
-
+export async function connectDB(): Promise<typeof mongoose> {
   try {
-    // Wait for the connection to establish
-    cached.conn = await cached.promise;
+
+    const conn = await mongoose.connect(MONGODB_URI!);
+    console.log("✅ MongoDB connecté avec succès");
+    console.log("MongoDB readyState:", mongoose.connection.readyState); 
+    return conn;
   } catch (error) {
-    // Reset promise on error to allow retry
-    cached.promise = null;
+    console.error("❌ Erreur de connexion MongoDB :", error);
     throw error;
   }
-
-  return cached.conn;
 }
-
-export default connectDB;

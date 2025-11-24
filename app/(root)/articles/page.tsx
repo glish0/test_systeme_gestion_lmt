@@ -1,7 +1,7 @@
 import CardArticle from "@/components/sharedComponents/cards/CardArticle";
-import { Button } from "@/components/ui/button";
+import AddArticleForm from "@/components/sharedComponents/forms/AddArticleForm";
 import Link from "next/link";
-import React from "react";
+
 
 const articles: IArticle[] = [
   {
@@ -36,7 +36,7 @@ const Arcticle = () => {
               inventaire.
             </p>
         </div>
-         <Button variant="outline">Button</Button>
+         <AddArticleForm />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {articles.map((item) => (

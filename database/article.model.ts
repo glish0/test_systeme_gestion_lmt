@@ -25,7 +25,7 @@ const ArticleSchema: Schema<IArticle> = new Schema(
     description: { type: String },
   },
   {
-    timestamps: true, // createdAt et updatedAt automatiquement
+    timestamps: true, 
   }
 )
 
