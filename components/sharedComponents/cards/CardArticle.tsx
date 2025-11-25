@@ -1,21 +1,10 @@
+
 import Image from "next/image"
 
-interface CardArticleProps {
-  name: string
-  image: string
-  slug: string
-  price: number
-  stock: number
-  brand?: string
-  reference?: string
-  category?: string
-  updatedAt?: string
-}
 
 const CardArticle = ({
   name,
   image,
-  slug,
   price,
   stock,
   brand,
@@ -58,7 +47,7 @@ const CardArticle = ({
       {/* Date mise à jour */}
       {updatedAt && (
         <p className="text-xs text-muted-foreground mt-1">
-          Mis à jour: {updatedAt}
+          Mis à jour: {updatedAt.split("T")[0]}
         </p>
       )}
     </div>

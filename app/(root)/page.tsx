@@ -7,6 +7,7 @@ import CardStat from "@/components/sharedComponents/cards/StatCard";
 import Chart from "@/components/sharedComponents/LineChart";
 import HistoriqTable from "@/components/sharedComponents/table/HistoriqTable";
 
+
 const DashboardPage = () => {
   const stockChartData = [
     { date: "01/11", Entrées: 15, Sorties: 5 },

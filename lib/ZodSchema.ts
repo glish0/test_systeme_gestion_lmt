@@ -23,3 +23,18 @@ image: z
 });
 
 export type ArticleInput = z.infer<typeof articleSchema>;
+
+
+
+export const registerSchema = z.object({
+  name: z.string().min(2, "Le nom doit contenir au moins 2 caractères"),
+  email: z.string().email("Adresse email invalide"),
+  password: z
+    .string()
+    .min(6, "Le mot de passe doit contenir au moins 6 caractères"),
+  role: z.enum(["admin", "employee"], {
+    message: "Veuillez sélectionner un rôle",
+  }),
+});
+
+export type RegisterForm = z.infer<typeof registerSchema>;

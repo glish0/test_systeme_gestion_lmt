@@ -34,9 +34,9 @@ export function useCreateArticle(): UseCreateArticleReturn {
       
       formData.append("image", data.image);
 
-      const res = await fetch("http://localhost:3001/api/articles", {
+      const res = await fetch("http://localhost:3000/api/articles", {
         method: "POST",
-        body: formData, // PAS DE headers !
+        body: formData, 
       });
 
       if (!res.ok) {

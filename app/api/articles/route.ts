@@ -2,7 +2,6 @@ import {NextRequest, NextResponse} from "next/server";
 import { v2 as cloudinary } from 'cloudinary';
 
 import {connectDB} from "@/lib/mongodb";
-import Event from '@/database/article.model';
 import Article from "@/database/article.model";
 
 export async function POST(req: NextRequest) {
@@ -50,14 +49,20 @@ export async function POST(req: NextRequest) {
     }
 }
 
+
+
 export async function GET() {
     try {
         await connectDB();
 
-        const events = await Event.find().sort({ createdAt: -1 });
+        const articles = await Article.find().sort({ createdAt: -1 }).lean();
 
-        return NextResponse.json({ message: 'Events fetched successfully', events }, { status: 200 });
+        return NextResponse.json({ message: 'Articles fetched successfully', articles }, { status: 200 });
     } catch (e) {
-        return NextResponse.json({ message: 'Event fetching failed', error: e }, { status: 500 });
+        console.error(e);
+        return NextResponse.json({
+            message: 'Article fetching failed',
+            error: e instanceof Error ? e.message : String(e)
+        }, { status: 500 });
     }
 }
